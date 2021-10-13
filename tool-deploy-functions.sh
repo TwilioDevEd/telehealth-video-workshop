@@ -87,6 +87,40 @@ curl --user ${AUTHENTICATION} \
   -F "Visibility=public"
 echo "created function version with path=${fpath}: SID=${FVERSION_SID}"
 
+
+# create send-third-party-message function
+fname2='/send-third-party-message'
+fpath2='functions/send-third-party-message.js'
+
+FUNCTION_SID=$(curl --silent --user ${AUTHENTICATION} \
+  -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions" \
+  | jq --raw-output '.functions[] | select(.friendly_name | contains("'${fname2}'")) | .sid')
+if [[ -z ${FUNCTION_SID} ]]; then
+  echo "creating function ${fname2}"
+  FUNCTION_SID=$(curl --silent --user ${AUTHENTICATION} \
+    -X POST "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions" \
+    --data-urlencode "FriendlyName=${fname2}" \
+    | jq --raw-output .sid)
+  echo "created function ${fname2}: SID=${FUNCTION_SID}"
+else
+  echo "found function ${fname2}"
+fi
+
+
+FV_COUNT=$(curl --silent --user ${AUTHENTICATION} \
+  -X GET "https://serverless.twilio.com/v1/Services/${SERVICE_SID}/Functions/${FUNCTION_SID}/Versions" \
+  | jq --raw-output '.function_versions[] | select(.path | contains("'${fname2}'")) | .' \
+  | jq --slurp length)
+echo "found ${FV_COUNT} function versions"
+echo "creating function version with path=${fpath2}"
+curl --user ${AUTHENTICATION} \
+  -X POST "https://serverless-upload.twilio.com/v1/Services/${SERVICE_SID}/Functions/${FUNCTION_SID}/Versions" \
+  -F "Content=@${fpath2}; type=application/javascript" \
+  -F "Path=${fname2}" \
+  -F "Visibility=public"
+echo "created function version with path=${fpath2}: SID=${FVERSION_SID}"
+
+
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo "Please goto Twilio console https://console.twilio.com/"
 echo "Open the telehealth service: ${SERVICE_UNIQUE_NAME}"

@@ -14,7 +14,9 @@ import ToggleVideoButton from '../Buttons/ToggleVideoButton/ToggleVideoButton';
 import ToggleScreenShareButton from '../Buttons/ToogleScreenShareButton/ToggleScreenShareButton';
 import { checkPatient } from '../Room/RoomUtils';
 import useParticipants from '../../hooks/useParticipants/useParticipants';
+import InviteButton from '../Buttons/InviteButton/InviteButton';
 import AboutDialog from '../AboutDialog/AboutDialog';
+import InviteDialog from '../InviteDialog/InviteDialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -74,6 +76,7 @@ export default function MenuBar() {
 
   const isPatient = checkPatient();
   const participants = useParticipants();
+  const [inviteOpen, setInviteOpen] = useState(false);
 
   if (participants.length === 0 && isPatient) return null;
 
@@ -94,6 +97,7 @@ export default function MenuBar() {
           </Hidden>
           <Grid item>
             <Grid container justifyContent="center">
+              {isPatient && <InviteButton onClick={() => setInviteOpen(true)} />}
               <ToggleAudioButton disabled={isReconnecting} />
               <ToggleVideoButton disabled={isReconnecting} />
               {!isSharingScreen && !isMobile && <ToggleScreenShareButton disabled={isReconnecting} />}
@@ -101,6 +105,12 @@ export default function MenuBar() {
               <Menu />
             </Grid>
           </Grid>
+          <InviteDialog
+            open={inviteOpen}
+            onClose={() => {
+              setInviteOpen(false);
+            }}
+          />
 
           <Hidden smDown>
             <Grid style={{ flex: 1 }}>
