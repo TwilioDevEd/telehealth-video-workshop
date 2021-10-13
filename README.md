@@ -5,7 +5,7 @@
 This setup guide applies to the 2021 SIGNAL Superclass Telehealth workshop, hosted here on GitHub.
 During this workshop, you will be deploying a telehealth application in your Twilio account. You’ll then deploy an upgraded version of the application, with new functionality. Through this process, you’ll see how quickly you can get started with a fully-featured application and how you can build and deploy new features on top of it.
 
-**To get started:** [Sign up](twilio.com/try-twilio) for a free trial account if you don't already have a Twilio account. You can then apply the code SUPERCLASS-TELEHEALTH on [this page](https://console.twilio.com/us1/billing/manage-billing/billing-overview) for $20 in trial credit. 
+**To get started:** [Sign up](twilio.com/try-twilio) for a free trial account if you don't already have a Twilio account. You can then apply the code shared in the Superclass README on [this page](https://console.twilio.com/us1/billing/manage-billing/billing-overview) for $20 in trial credit. 
 
 If you already have a non-trial account, you're good to go, no other steps necessary!
 
